@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="./css/style.css">
+	<script src="./lib/underscore-min.js"></script>
+	<script src="./lib/phaser.min.js"></script>
+
+	<script src="./lib/utils.js"></script>
+
+	<script src="./maze/levels.js"></script>
+	<script src="./maze/maze.js"></script>
+	<script src="./maze/pegman.js"></script>
+
+	<script src="./js/boot.js"></script>
+	<script src="./js/load.js"></script>
+	<script src="./js/maze.js"></script>
+	<script src="./js/main.js"></script>
+</head>
+
+<body>
+	<div id="canvas"></div>
+	<div id="editor"></div>
+	<table width="400">
+	<tr>
+		<td style="width: 190px; text-align: center; vertical-align: top;">
+			<button id="codeButton" class="notext" title="Code">
+				<img src="./assets/1x1.gif" class="code icon21">
+			</button>
+			<button id="linkButton" class="notext" title="Link">
+				<img src="./assets/1x1.gif" class="link icon21">
+			</button>
+		</td>
+		<td>
+			<button id="runButton" class="primary" title="Run">
+				<img src="./assets/1x1.gif" class="run icon21"> Run Program
+			</button>
+			<button id="resetButton" class="primary" style="display: none" title="Reset">
+				<img src="./assets/1x1.gif" class="stop icon21"> Reset
+			</button>
+		</td>
+	</tr>
+	</table>
+</body>
+
+</html>
