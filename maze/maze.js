@@ -1,11 +1,9 @@
 
-// 'use strict';
-
-// includeJS('./maze/levels.js');
+'use strict';
 
 var Maze = Maze || {};
 
-Maze.LEVEL = getNumberParamFromUrl('level', 1, Maze.levels.length);
+Maze.LEVEL = getNumberParamFromUrl('level', 0, Maze.levels.length - 1);
 
 /**
  * The types of squares in the maze, which is represented

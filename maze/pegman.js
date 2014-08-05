@@ -1,5 +1,5 @@
 
-// 'use strict';
+'use strict';
 
 /**
  * Constants for cardinal directions.  Subsequent code assumes these are
