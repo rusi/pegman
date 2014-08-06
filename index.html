@@ -2,15 +2,27 @@
 <html>
 <head>
 	<link rel="stylesheet" type="text/css" href="./css/style.css">
-	<script src="./lib/underscore-min.js"></script>
-	<script src="./lib/phaser.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="./css/dialogs.css">
 
-	<script src="./lib/utils.js"></script>
+	<script type="text/javascript" src="./lib/underscore-min.js"></script>
+	<script type="text/javascript" src="./lib/phaser.min.js"></script>
 
-	<script src="./js/boot.js"></script>
-	<script src="./js/load.js"></script>
-	<script src="./js/maze.js"></script>
-	<script src="./js/main.js"></script>
+	<script type="text/javascript" src="./lib/utils.js"></script>
+
+	<script type="text/javascript" src="./js/boot.js"></script>
+	<script type="text/javascript" src="./js/load.js"></script>
+	<script type="text/javascript" src="./js/maze.js"></script>
+	<script type="text/javascript" src="./js/main.js"></script>
+
+	<script type="text/javascript" src="./blockly/blockly_compressed.js"></script>
+	<script type="text/javascript" src="./blockly/blocks_compressed.js"></script>
+	<script type="text/javascript" src="./blockly/javascript_compressed.js"></script>
+	<script type="text/javascript" src="./blockly/msg/js/en.js"></script>
+
+	<script type="text/javascript" src="./js/pegman_blocks.js"></script>
+	<script type="text/javascript" src="./js/dialogs.js"></script>
+	<script type="text/javascript" src="./js/blockly_utils.js"></script>
+
 </head>
 
 <body>
@@ -36,6 +48,58 @@
 		</td>
 	</tr>
 	</table>
+
+	<div id="dialogShadow" class="dialogAnimate"></div>
+	<div id="dialogBorder"></div>
+	<div id="dialog"></div>
+	<div id="dialogCode" class="dialogHiddenContent">
+		<pre id="containerCode"></pre>
+		<div class="farSide" style="padding: 1ex 3ex 0">
+			<button class="secondary" onclick="Dialogs.hideDialog(true)">OK</button>
+		</div>
+	</div>
+
+	<!-- <xml id="toolbox" style="display: none">
+		<block type="controls_if"></block>
+		<block type="controls_repeat_ext"></block>
+		<block type="logic_compare"></block>
+		<block type="math_number"></block>
+		<block type="math_arithmetic"></block>
+		<block type="text"></block>
+		<block type="text_print"></block>
+	</xml> -->
+	<xml id="toolbox" style="display: none;">
+		<block type="maze_moveForward"></block>
+		<block type="maze_turn"><field name="DIR">turnLeft</field></block>
+		<block type="maze_turn"><field name="DIR">turnRight</field></block>
+		<!--
+		{if $ij.level > 2}
+			<block type="maze_forever"></block>
+			{if $ij.level == 6}
+				<block type="maze_if"><field name="DIR">isPathLeft</field></block>
+			{elseif $ij.level > 6}
+				<block type="maze_if"></block>
+				{if $ij.level > 8}
+					<block type="maze_ifElse"></block>
+				{/if}
+			{/if}
+		{/if}
+		-->
+	</xml>
+	<script type="text/javascript">
+		BlocklyUtils.init();
+
+		Blockly.inject(document.getElementById('editor'), {
+			path: './blockly/',
+			toolbox: document.getElementById('toolbox'),
+			trashcan: true,
+			scrollbars: true,
+		});
+
+		if (document.getElementById('codeButton')) {
+			bindClick('codeButton', BlocklyUtils.showCode);
+		}
+	</script>
 </body>
 
 </html>

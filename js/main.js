@@ -14,3 +14,5 @@ game.state.add('maze', mazeState);
 
 game.state.start('boot');
 //game.state.start('maze');
+
+
