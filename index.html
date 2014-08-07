@@ -69,9 +69,9 @@
 		<block type="text_print"></block>
 	</xml> -->
 	<xml id="toolbox" style="display: none;">
-		<block type="maze_moveForward"></block>
-		<block type="maze_turn"><field name="DIR">turnLeft</field></block>
-		<block type="maze_turn"><field name="DIR">turnRight</field></block>
+		<block type="pegman_moveForward"></block>
+		<block type="pegman_turn"><field name="DIR">turnLeft</field></block>
+		<block type="pegman_turn"><field name="DIR">turnRight</field></block>
 		<!--
 		{if $ij.level > 2}
 			<block type="maze_forever"></block>
@@ -95,10 +95,6 @@
 			trashcan: true,
 			scrollbars: true,
 		});
-
-		if (document.getElementById('codeButton')) {
-			bindClick('codeButton', BlocklyUtils.showCode);
-		}
 	</script>
 </body>
 

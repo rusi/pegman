@@ -128,3 +128,47 @@ Pegman.animateTurnTo = function(d) {
 	}, this);
 }
 
+Pegman.play = function() {
+	this.playNextAction();
+}
+
+Pegman.nextAction = function(action) {
+	this.pegmanActions.push(action);
+}
+
+Pegman.playNextAction = function() {
+	if (this.pegmanActions.length <= 0)
+		return;
+
+	if (this.tween) {
+		this.tween = null;
+	}
+	if (this.anim) {
+		this.anim = null;
+	}
+
+	var action = this.pegmanActions.shift();
+	// console.log(action);
+	BlocklyUtils.highlight(action.blockId);
+	if (action.command !== null) {
+		switch (action.command) {
+			case "forward":
+				var step = getStepInDirection[directionToString(this.direction)];
+				this.animateMoveTo(this.posX + step[0], this.posY + step[1]);
+				break;
+			case "left":
+				this.turnToInternal(constrain(this.direction + 1, 4));
+				break;
+			case "right":
+				this.turnToInternal(constrain(this.direction - 1, 4));
+				break;
+		}
+	}
+}
+
+Pegman.turnToInternal = function(newDirection) {
+	var d = directionToString(this.direction);
+	this.direction = newDirection;
+	d += "_" + directionToString(this.direction);
+	this.animateTurnTo(d);
+}

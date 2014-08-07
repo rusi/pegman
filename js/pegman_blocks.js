@@ -1,8 +1,9 @@
 'use strict';
 
 // Extensions to Blockly's language and JavaScript generator.
+var Pegman = Pegman || {}
 
-Blockly.Blocks['maze_moveForward'] = {
+Blockly.Blocks['pegman_moveForward'] = {
 	// Block for moving forward.
 	init: function() {
 		this.setColour(290);
@@ -12,12 +13,15 @@ Blockly.Blocks['maze_moveForward'] = {
 		// this.setTooltip(BlocklyApps.getMsg('Maze_moveForwardTooltip'));
 	}
 };
-Blockly.JavaScript['maze_moveForward'] = function(block) {
+Blockly.JavaScript['pegman_moveForward'] = function(block) {
 	// Generate JavaScript for moving forward.
 	return 'Pegman.moveForward(\'block_id_' + block.id + '\');\n';
 };
+Pegman.moveForward = function(id) {
+	Pegman.nextAction({command: "forward", blockId: id});
+}
 
-Blockly.Blocks['maze_turn'] = {
+Blockly.Blocks['pegman_turn'] = {
 	// Block for turning left or right.
 	init: function() {
 		var DIRECTIONS =
@@ -33,11 +37,17 @@ Blockly.Blocks['maze_turn'] = {
 		// this.setTooltip(BlocklyApps.getMsg('Maze_turnTooltip'));
 	}
 };
-Blockly.JavaScript['maze_turn'] = function(block) {
+Blockly.JavaScript['pegman_turn'] = function(block) {
 	// Generate JavaScript for turning left or right.
 	var dir = block.getFieldValue('DIR');
 	return 'Pegman.' + dir + '(\'block_id_' + block.id + '\');\n';
 };
+Pegman.turnLeft = function(id) {
+	Pegman.nextAction({command: "left", blockId: id});
+}
+Pegman.turnRight = function(id) {
+	Pegman.nextAction({command: "right", blockId: id});
+}
 
 // Blockly.Blocks['maze_forever'] = {
 // 	// Block for forever loop.
