@@ -49,7 +49,7 @@ BlocklyUtils.highlight = function(id) {
  * @param {string} code Generated code.
  * @return {string} The code without serial numbers and timeout checks.
  */
-BlocklyUtils.stripCode = function(code) {
+ BlocklyUtils.stripCode = function(code) {
 	// Strip out serial numbers.
 	code = code.replace(/(,\s*)?'block_id_\d+'\)/g, ')');
 	// Remove timeouts.
@@ -65,10 +65,7 @@ BlocklyUtils.stripCode = function(code) {
 BlocklyUtils.showCode = function(e) {
 	var origin = e.target;
 	var code = Blockly.JavaScript.workspaceToCode();
-console.log(code);
-
 	code = BlocklyUtils.stripCode(code);
-console.log(code);
 
 	var pre = document.getElementById('containerCode');
 	pre.textContent = code;
@@ -132,12 +129,15 @@ BlocklyUtils.resetProgram = function() {
 	// Prevent double-clicks or double-taps.
 	runButton.disabled = false;
 
+	BlocklyUtils.highlight(null);
 	Blockly.mainWorkspace.traceOn(false);
 
 	Pegman.reset();
 }
 
 BlocklyUtils.execute = function() {
+	Pegman.reset();
+
 	var code = Blockly.JavaScript.workspaceToCode();
 
 	var result = ResultType.UNSET;
@@ -170,3 +170,78 @@ BlocklyUtils.execute = function() {
 
 	Pegman.play();
 }
+
+/**
+ * Congratulates the user for completing the level and offers to
+ * direct them to the next level, if available.
+ */
+BlocklyUtils.congratulations = function() {
+	var content = document.getElementById('dialogDone');
+	var buttonDiv = document.getElementById('dialogDoneButtons');
+	buttonDiv.textContent = '';
+	var style = {
+		width: '40%',
+		left: '30%',
+		top: '5em'
+	};
+
+	if (Maze.LEVEL < Maze.MAX_LEVEL) {
+		var text = "Congratulations! Are you ready to proceed to level %1?".replace("%1", (Maze.LEVEL + 2));
+		var cancel = document.createElement('button');
+		cancel.appendChild(document.createTextNode("Cancel"));
+		cancel.addEventListener('click', Dialogs.hideDialog, true);
+		cancel.addEventListener('touchend', Dialogs.hideDialog, true);
+		buttonDiv.appendChild(cancel);
+
+		var ok = document.createElement('button');
+		ok.className = 'secondary';
+		ok.appendChild(document.createTextNode("OK"));
+		ok.addEventListener('click', BlocklyUtils.nextLevel, true);
+		ok.addEventListener('touchend', BlocklyUtils.nextLevel, true);
+		buttonDiv.appendChild(ok);
+
+		Dialogs.showDialog(content, null, false, true, style, function() {
+				document.body.removeEventListener('keydown', BlocklyUtils.congratulationsKeyDown_, true);
+			});
+		document.body.addEventListener('keydown', BlocklyUtils.congratulationsKeyDown_, true);
+	} else {
+		var text = "Congratulations! You have solved the final level.";
+		var ok = document.createElement('button');
+		ok.className = 'secondary';
+		ok.addEventListener('click', Dialogs.hideDialog, true);
+		ok.addEventListener('touchend', Dialogs.hideDialog, true);
+		ok.appendChild(document.createTextNode("OK"));
+		buttonDiv.appendChild(ok);
+		Dialogs.showDialog(content, null, false, true, style, Dialogs.stopDialogKeyDown);
+		Dialogs.startDialogKeyDown();
+	}
+	document.getElementById('dialogDoneText').textContent = text;
+};
+
+/**
+ * If the user preses enter, escape, or space, hide the dialog.
+ * Enter and space move to the next level, escape does not.
+ * @param {!Event} e Keyboard event.
+ * @private
+ */
+BlocklyUtils.congratulationsKeyDown_ = function(e) {
+	if (e.keyCode == 13 ||
+		e.keyCode == 27 ||
+		e.keyCode == 32)
+	{
+		Dialogs.hideDialog(true);
+		e.stopPropagation();
+		e.preventDefault();
+		if (e.keyCode != 27) {
+			BlocklyUtils.nextLevel();
+		}
+	}
+};
+
+/**
+ * Go to the next level.
+ */
+BlocklyUtils.nextLevel = function() {
+	window.location = window.location.protocol + '//' + window.location.host + window.location.pathname
+		+ '?level=' + (Maze.LEVEL + 1);
+};

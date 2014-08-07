@@ -43,12 +43,12 @@ Pegman.PEGMAN_WIDTH = 49;
 Pegman.startPos = {x: 0, y: 0};
 Pegman.startDirection = DirectionType.EAST;
 
-Pegman.pegmanSprite = null;
 Pegman.posX = 0;
 Pegman.posY = 0;
-
 Pegman.direction = DirectionType.EAST;
+
 Pegman.pegmanActions = [];
+
 Pegman.pegmanSprite = null;
 Pegman.anim = null;
 Pegman.tween = null;
@@ -76,6 +76,8 @@ Pegman.create = function() {
 	this.pegmanSprite.animations.add('SOUTH_EAST', [8, 7, 6, 5, 4], fps, /*loop*/false);
 	this.pegmanSprite.animations.add('EAST_NORTH', [4, 3, 2, 1, 0], fps, /*loop*/false);
 	this.pegmanSprite.animations.add('NORTH_EAST', [0, 1, 2, 3, 4], fps, /*loop*/false);
+
+	this.pegmanSprite.animations.add('FINISH', [20, 18, 20, 16, 20, 16, 20, 18, 20], fps, /*loop*/false);
 }
 
 Pegman.init = function(startPos) {
@@ -96,10 +98,14 @@ Pegman.reset = function() {
 	this.tween = null;
 	this.anim = null;
 
+	this.pegmanActions = [];
+	this.resetPos();
+}
+
+Pegman.resetPos = function() {
 	this.posX = this.startPos.x;
 	this.posY = this.startPos.y;
 	this.direction = this.startDirection;
-	this.pegmanActions = [];
 	// post reset
 	this.pegmanSprite.reset(this.posX * Maze.SQUARE_SIZE, this.posY * Maze.SQUARE_SIZE);
 	this.pegmanSprite.animations.play(directionToString(this.direction));
@@ -120,6 +126,20 @@ Pegman.animateMoveTo = function(x, y) {
 	this.tween.start();
 }
 
+Pegman.animateFailMoveBy = function(stepX, stepY) {
+	var x = this.posX * Maze.SQUARE_SIZE;
+	var y = this.posY * Maze.SQUARE_SIZE;
+	this.tween = game.add.tween(this.pegmanSprite);
+	this.tween
+		.to({ x: x + stepX * 10, y: y + stepY * 10 }, 200, Phaser.Easing.Linear.None)
+		.to({ x: x, y: y }, 10, Phaser.Easing.Linear.None)
+		.to({ x: x + stepX * 10, y: y + stepY * 10 }, 200, Phaser.Easing.Linear.None)
+		.to({ x: x, y: y }, 10, Phaser.Easing.Linear.None)
+		.to({ x: x + stepX * 10, y: y + stepY * 10 }, 200, Phaser.Easing.Linear.None)
+		.to({ x: x, y: y }, 10, Phaser.Easing.Linear.None)
+		.start();
+}
+
 Pegman.animateTurnTo = function(d) {
 	//console.log(d);
 	this.anim = this.pegmanSprite.animations.play(d);
@@ -128,7 +148,17 @@ Pegman.animateTurnTo = function(d) {
 	}, this);
 }
 
+Pegman.animateFinish = function() {
+	this.anim = this.pegmanSprite.animations.play("FINISH");
+	this.anim.onComplete.addOnce(function() {
+		this.pegmanSprite.animations.play(directionToString(this.direction)).onComplete.addOnce(function(){
+			BlocklyUtils.congratulations();
+		});
+	}, this);
+}
+
 Pegman.play = function() {
+	this.resetPos();
 	this.playNextAction();
 }
 
@@ -137,8 +167,10 @@ Pegman.nextAction = function(action) {
 }
 
 Pegman.playNextAction = function() {
-	if (this.pegmanActions.length <= 0)
+	if (this.pegmanActions.length <= 0) {
+		BlocklyUtils.highlight(null);
 		return;
+	}
 
 	if (this.tween) {
 		this.tween = null;
@@ -156,19 +188,56 @@ Pegman.playNextAction = function() {
 				var step = getStepInDirection[directionToString(this.direction)];
 				this.animateMoveTo(this.posX + step[0], this.posY + step[1]);
 				break;
+			case "fail_forward":
+				var step = getStepInDirection[directionToString(this.direction)];
+				this.animateFailMoveBy(step[0], step[1]);
+				break;
 			case "left":
-				this.turnToInternal(constrain(this.direction + 1, 4));
+				this.animateTurnTo(this.turnTo(constrain(this.direction + 1, 4)));
 				break;
 			case "right":
-				this.turnToInternal(constrain(this.direction - 1, 4));
+				this.animateTurnTo(this.turnTo(constrain(this.direction - 1, 4)));
+				break;
+			case "finish":
+				this.animateFinish();
+				break;
+			default:
+				console.log("Missing: " + action.command);
 				break;
 		}
 	}
 }
 
-Pegman.turnToInternal = function(newDirection) {
+Pegman.turnTo = function(newDirection) {
 	var d = directionToString(this.direction);
 	this.direction = newDirection;
 	d += "_" + directionToString(this.direction);
-	this.animateTurnTo(d);
+	return d;
+}
+
+Pegman.moveForward = function(id) {
+	var step = getStepInDirection[directionToString(this.direction)];
+	var newPos = { posX: this.posX + step[0], posY: this.posY + step[1] };
+
+	if (!Maze.isPath(newPos.posX, newPos.posY)) {
+		this.nextAction({ command: "fail_forward", blockId: id });
+		throw false; // failed; no path
+	}
+
+	this.posX = newPos.posX;
+	this.posY = newPos.posY;
+	this.nextAction({command: "forward", blockId: id});
+
+	if (Maze.isFinish(newPos.posX, newPos.posY)){
+		this.nextAction({command: "finish", blockId: id});
+		throw true;  // success; reached the finish line!
+	}
+}
+Pegman.turnLeft = function(id) {
+	this.turnTo(constrain(this.direction + 1, 4));
+	Pegman.nextAction({command: "left", blockId: id});
+}
+Pegman.turnRight = function(id) {
+	this.turnTo(constrain(this.direction - 1, 4));
+	Pegman.nextAction({command: "right", blockId: id});
 }

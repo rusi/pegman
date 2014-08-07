@@ -17,9 +17,6 @@ Blockly.JavaScript['pegman_moveForward'] = function(block) {
 	// Generate JavaScript for moving forward.
 	return 'Pegman.moveForward(\'block_id_' + block.id + '\');\n';
 };
-Pegman.moveForward = function(id) {
-	Pegman.nextAction({command: "forward", blockId: id});
-}
 
 Blockly.Blocks['pegman_turn'] = {
 	// Block for turning left or right.
@@ -42,12 +39,6 @@ Blockly.JavaScript['pegman_turn'] = function(block) {
 	var dir = block.getFieldValue('DIR');
 	return 'Pegman.' + dir + '(\'block_id_' + block.id + '\');\n';
 };
-Pegman.turnLeft = function(id) {
-	Pegman.nextAction({command: "left", blockId: id});
-}
-Pegman.turnRight = function(id) {
-	Pegman.nextAction({command: "right", blockId: id});
-}
 
 // Blockly.Blocks['maze_forever'] = {
 // 	// Block for forever loop.

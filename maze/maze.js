@@ -3,7 +3,9 @@
 
 var Maze = Maze || {};
 
-Maze.LEVEL = getNumberParamFromUrl('level', 0, Maze.levels.length - 1);
+Maze.MAX_LEVEL = Maze.levels.length - 1;
+Maze.LEVEL = getNumberParamFromUrl('level', 0, Maze.MAX_LEVEL);
+
 
 /**
  * The types of squares in the maze, which is represented
@@ -72,6 +74,16 @@ Maze.init = function() {
 
 	this.marker = game.add.sprite(Maze.FINISH.x * Maze.SQUARE_SIZE, Maze.FINISH.y * Maze.SQUARE_SIZE, 'marker');
 	this.marker.anchor.setTo(-0.75, 0.1);
+}
+
+Maze.isPath = function(x, y) {
+	var square = Maze.map[y][x];
+	return square !== Maze.SquareType.WALL && square !== undefined;
+}
+
+Maze.isFinish = function(x, y) {
+	var square = Maze.map[y][x];
+	return square === Maze.SquareType.FINISH && square !== undefined;
 }
 
 // Return a value of '0' if the specified square is wall or out of bounds,
