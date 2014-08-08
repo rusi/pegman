@@ -10,24 +10,57 @@ var ResultType = {
 
 var BlocklyUtils = BlocklyUtils || {};
 
+BlocklyUtils.buildToolbox = function() {
+	var toolbox = '<xml>';
+	//console.log(Maze.level.blocks);
+	_.each(Maze.level.blocks, function(block){
+		toolbox += ' <block type="' + block.b + '">';
+		if (block.f) {
+			toolbox += '<field name="' + block.f[0] + '">' + block.f[1] + '</field>';
+		}
+		toolbox += '</block>';
+	});
+	toolbox += '</xml>';
+	return toolbox;
+}
+
 BlocklyUtils.init = function() {
+	Blockly.inject(document.getElementById('editor'), {
+		path: './blockly/',
+		maxBlocks: Maze.level.maxBlocks,
+		//toolbox: document.getElementById('toolbox'),
+		toolbox: BlocklyUtils.buildToolbox(),
+		trashcan: true,
+		scrollbars: true,
+	});
+
 	Blockly.JavaScript.INFINITE_LOOP_TRAP = '  BlocklyUtils.checkTimeout(%1);\n';
 
-	BlocklyUtils.ticks = 1000;
+	BlocklyUtils.ticks = 10;
 
 	if (document.getElementById('codeButton')) {
 		bindClick('codeButton', BlocklyUtils.showCode);
 	};
 
-	// Blockly.addChangeListener(function() {
-	// 	Maze.updateCapacity();
-	// });
+	Blockly.addChangeListener(function() {
+		BlocklyUtils.updateCapacity();
+	});
 
 	// Make connecting blocks easier for beginners.
 	Blockly.SNAP_RADIUS *= 2;
 
 	bindClick('runButton', BlocklyUtils.runProgram);
 	bindClick('resetButton', BlocklyUtils.resetProgram);
+}
+
+BlocklyUtils.updateCapacity = function() {
+	var cap = Blockly.mainWorkspace.remainingCapacity();
+	if (cap == Infinity) {
+		$("#capacity").css('display','none');
+		return;
+	}
+	cap = Number(cap);
+	$("#capacity").text("Remaining " + cap + " blocks.");
 }
 
 /**
@@ -186,7 +219,7 @@ BlocklyUtils.congratulations = function() {
 	};
 
 	if (Maze.LEVEL < Maze.MAX_LEVEL) {
-		var text = "Congratulations! Are you ready to proceed to level %1?".replace("%1", (Maze.LEVEL + 2));
+		var text = "Congratulations! Are you ready to proceed to level %1?".replace("%1", (Maze.LEVEL + 1));
 		var cancel = document.createElement('button');
 		cancel.appendChild(document.createTextNode("Cancel"));
 		cancel.addEventListener('click', Dialogs.hideDialog, true);

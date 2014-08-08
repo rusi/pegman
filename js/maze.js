@@ -10,6 +10,7 @@ var mazeState = {
 	},
 
 	create: function() {
+		$("#caption").text(Maze.level.caption);
 		Maze.init();
 		Pegman.init(Maze.START);
 	}

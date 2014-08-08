@@ -193,10 +193,10 @@ Pegman.playNextAction = function() {
 				this.animateFailMoveBy(step[0], step[1]);
 				break;
 			case "left":
-				this.animateTurnTo(this.turnTo(constrain(this.direction + 1, 4)));
+				this.animateTurnTo(this.turnTo(constrain(this.direction - 1, 4)));
 				break;
 			case "right":
-				this.animateTurnTo(this.turnTo(constrain(this.direction - 1, 4)));
+				this.animateTurnTo(this.turnTo(constrain(this.direction + 1, 4)));
 				break;
 			case "finish":
 				this.animateFinish();
@@ -234,10 +234,10 @@ Pegman.moveForward = function(id) {
 	}
 }
 Pegman.turnLeft = function(id) {
-	this.turnTo(constrain(this.direction + 1, 4));
+	this.turnTo(constrain(this.direction - 1, 4));
 	Pegman.nextAction({command: "left", blockId: id});
 }
 Pegman.turnRight = function(id) {
-	this.turnTo(constrain(this.direction - 1, 4));
+	this.turnTo(constrain(this.direction + 1, 4));
 	Pegman.nextAction({command: "right", blockId: id});
 }

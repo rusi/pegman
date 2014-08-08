@@ -7,7 +7,7 @@ Blockly.Blocks['pegman_moveForward'] = {
 	// Block for moving forward.
 	init: function() {
 		this.setColour(290);
-		this.appendDummyInput().appendField("Move Forward");
+		this.appendDummyInput().appendField("move forward");
 		this.setPreviousStatement(true);
 		this.setNextStatement(true);
 		// this.setTooltip(BlocklyApps.getMsg('Maze_moveForwardTooltip'));
@@ -22,8 +22,8 @@ Blockly.Blocks['pegman_turn'] = {
 	// Block for turning left or right.
 	init: function() {
 		var DIRECTIONS =
-			[["Turn Left", 'turnLeft'],
-			 ["Turn Right", 'turnRight']];
+			[["turn left", 'turnLeft'],
+			 ["turn right", 'turnRight']];
 		// Append arrows to direction messages.
 		DIRECTIONS[0][0] += ' \u21BA';
 		DIRECTIONS[1][0] += ' \u21BB';
@@ -40,28 +40,28 @@ Blockly.JavaScript['pegman_turn'] = function(block) {
 	return 'Pegman.' + dir + '(\'block_id_' + block.id + '\');\n';
 };
 
-// Blockly.Blocks['maze_forever'] = {
-// 	// Block for forever loop.
-// 	init: function() {
-// 		this.setColour(120);
-// 		this.appendDummyInput()
-// 				.appendField(BlocklyApps.getMsg('Maze_repeatUntil'))
-// 				.appendField(new Blockly.FieldImage(Maze.SKIN.marker, 12, 16));
-// 		this.appendStatementInput('DO')
-// 				.appendField(BlocklyApps.getMsg('Maze_doCode'));
-// 		this.setPreviousStatement(true);
-// 		this.setTooltip(BlocklyApps.getMsg('Maze_whileTooltip'));
-// 	}
-// };
-// Blockly.JavaScript['maze_forever'] = function(block) {
-// 	// Generate JavaScript for forever loop.
-// 	var branch = Blockly.JavaScript.statementToCode(block, 'DO');
-// 	if (Blockly.JavaScript.INFINITE_LOOP_TRAP) {
-// 		branch = Blockly.JavaScript.INFINITE_LOOP_TRAP.replace(/%1/g,
-// 				'\'block_id_' + block.id + '\'') + branch;
-// 	}
-// 	return 'while (true) {\n' + branch + '}\n';
-// };
+Blockly.Blocks['block_forever'] = {
+	// Block for forever loop.
+	init: function() {
+		this.setColour(120);
+		this.appendDummyInput()
+				.appendField("repeat until")
+				.appendField(new Blockly.FieldImage(Maze.SKIN.marker, 12, 16));
+		this.appendStatementInput('DO')
+				.appendField("do");
+		this.setPreviousStatement(true);
+		// this.setTooltip(BlocklyApps.getMsg('Maze_whileTooltip'));
+	}
+};
+Blockly.JavaScript['block_forever'] = function(block) {
+	// Generate JavaScript for forever loop.
+	var branch = Blockly.JavaScript.statementToCode(block, 'DO');
+	if (Blockly.JavaScript.INFINITE_LOOP_TRAP) {
+		branch = Blockly.JavaScript.INFINITE_LOOP_TRAP.replace(/%1/g,
+				'\'block_id_' + block.id + '\'') + branch;
+	}
+	return 'while (true) {\n' + branch + '}\n';
+};
 
 // Blockly.Blocks['maze_if'] = {
 // 	// Block for 'if' conditional if there is a path.

@@ -3,8 +3,8 @@
 
 var Maze = Maze || {};
 
-Maze.MAX_LEVEL = Maze.levels.length - 1;
-Maze.LEVEL = getNumberParamFromUrl('level', 0, Maze.MAX_LEVEL);
+Maze.MAX_LEVEL = Maze.levels.length;
+Maze.LEVEL = getNumberParamFromUrl('level', 1, Maze.MAX_LEVEL);
 
 
 /**
@@ -45,7 +45,8 @@ Maze.tile_SHAPES = {
   'null4': [1, 3]
 };
 
-Maze.map = Maze.levels[Maze.LEVEL].map;
+Maze.level = Maze.levels[Maze.LEVEL - 1];
+Maze.map = Maze.level.map;
 
 /**
  * Measure maze dimensions and set sizes.
@@ -64,9 +65,14 @@ Maze.PATH_WIDTH = Maze.SQUARE_SIZE / 3;
 Maze.START = {};
 Maze.FINISH = {};
 
+Maze.SKIN = {
+	tiles: './assets/tiles_pegman.png',
+	marker: './assets/marker.png',
+};
+
 Maze.preload = function(){
-	game.load.spritesheet('tiles', './assets/tiles_pegman.png', Maze.SQUARE_SIZE, Maze.SQUARE_SIZE);
-	game.load.image('marker', './assets/marker.png')
+	game.load.spritesheet('tiles', this.SKIN.tiles, Maze.SQUARE_SIZE, Maze.SQUARE_SIZE);
+	game.load.image('marker', this.SKIN.marker);
 }
 
 Maze.init = function() {

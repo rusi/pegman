@@ -1,9 +1,9 @@
 
 'use strict';
 
-includeJS("./maze/levels.js");
-includeJS("./maze/maze.js");
-includeJS("./maze/pegman.js");
+// includeJS("./maze/levels.js");
+// includeJS("./maze/maze.js");
+// includeJS("./maze/pegman.js");
 
 //document.getElementById('canvas').remove();
 var game = new Phaser.Game(400, 400, Phaser.AUTO, 'canvas', {}, true);

@@ -4,6 +4,7 @@
 	<link rel="stylesheet" type="text/css" href="./css/style.css">
 	<link rel="stylesheet" type="text/css" href="./css/dialogs.css">
 
+	<script type="text/javascript" src="./lib/jquery-2.1.1.min.js"></script>
 	<script type="text/javascript" src="./lib/underscore-min.js"></script>
 	<script type="text/javascript" src="./lib/phaser.min.js"></script>
 
@@ -19,6 +20,10 @@
 	<script type="text/javascript" src="./blockly/javascript_compressed.js"></script>
 	<script type="text/javascript" src="./blockly/msg/js/en.js"></script>
 
+	<script type="text/javascript" src="./maze/levels.js"></script>
+	<script type="text/javascript" src="./maze/maze.js"></script>
+	<script type="text/javascript" src="./maze/pegman.js"></script>
+
 	<script type="text/javascript" src="./js/pegman_blocks.js"></script>
 	<script type="text/javascript" src="./js/dialogs.js"></script>
 	<script type="text/javascript" src="./js/blockly_utils.js"></script>
@@ -28,7 +33,7 @@
 <body>
 	<div id="canvas"></div>
 	<div id="editor"></div>
-	<table width="400">
+	<table>
 	<tr>
 		<td style="width: 190px; text-align: center; vertical-align: top;">
 			<button id="codeButton" class="notext" title="Code">
@@ -38,13 +43,17 @@
 				<img src="./assets/1x1.gif" class="link icon21">
 			</button>
 		</td>
-		<td>
+		<td width="210px">
 			<button id="runButton" class="primary" title="Run">
 				<img src="./assets/1x1.gif" class="run icon21"> Run Program
 			</button>
 			<button id="resetButton" class="primary" style="display: none" title="Reset">
 				<img src="./assets/1x1.gif" class="stop icon21"> Reset
 			</button>
+		</td>
+		<td>
+			<div id="capacity"></div>
+			<div id="caption">Loading...</div>
 		</td>
 	</tr>
 	</table>
@@ -92,13 +101,6 @@
 	</xml>
 	<script type="text/javascript">
 		BlocklyUtils.init();
-
-		Blockly.inject(document.getElementById('editor'), {
-			path: './blockly/',
-			toolbox: document.getElementById('toolbox'),
-			trashcan: true,
-			scrollbars: true,
-		});
 	</script>
 </body>
 
