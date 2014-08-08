@@ -36,8 +36,6 @@ BlocklyUtils.init = function() {
 
 	Blockly.JavaScript.INFINITE_LOOP_TRAP = '  BlocklyUtils.checkTimeout(%1);\n';
 
-	BlocklyUtils.ticks = 10;
-
 	if (document.getElementById('codeButton')) {
 		bindClick('codeButton', BlocklyUtils.showCode);
 	};
@@ -171,8 +169,8 @@ BlocklyUtils.resetProgram = function() {
 BlocklyUtils.execute = function() {
 	Pegman.reset();
 
+	BlocklyUtils.ticks = 100;
 	var code = Blockly.JavaScript.workspaceToCode();
-
 	var result = ResultType.UNSET;
 
 	// Try running the user's code.  There are four possible outcomes:
