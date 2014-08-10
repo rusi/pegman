@@ -125,7 +125,7 @@ BlocklyUtils.showCode = function(e) {
  */
 BlocklyUtils.checkTimeout = function(opt_id) {
 	if (opt_id) {
-		//BlocklyApps.log.push([null, opt_id]);
+		Pegman.pegmanActions.push({command:null, blockId:opt_id});
 	}
 	if (BlocklyUtils.ticks-- < 0) {
 		throw Infinity;

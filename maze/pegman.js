@@ -39,6 +39,8 @@ var Pegman = Pegman || {};
 
 Pegman.PEGMAN_HEIGHT = 52;
 Pegman.PEGMAN_WIDTH = 49;
+Pegman.LOOK_WIDTH = 100;
+Pegman.LOOK_HEIGHT = 100;
 
 Pegman.startPos = {x: 0, y: 0};
 Pegman.startDirection = DirectionType.EAST;
@@ -50,34 +52,42 @@ Pegman.direction = DirectionType.EAST;
 Pegman.pegmanActions = [];
 
 Pegman.pegmanSprite = null;
+Pegman.lookSprite = null;
 Pegman.anim = null;
 Pegman.tween = null;
 
 Pegman.preload = function() {
 	game.load.spritesheet('pegman', './assets/pegman.png', Pegman.PEGMAN_WIDTH, Pegman.PEGMAN_HEIGHT-1);
+	game.load.spritesheet('look', './assets/lookThinner.png', Pegman.LOOK_WIDTH, Pegman.LOOK_HEIGHT);
 }
 
 Pegman.create = function() {
-	if (this.pegmanSprite !== null)
-		return;
-	this.pegmanSprite = game.add.sprite(0, 0, 'pegman');
-	this.pegmanSprite.kill();
-	this.pegmanSprite.anchor.setTo(0, 0.15);
 	var fps = 7;
-	this.pegmanSprite.animations.add('NORTH', [0], fps, /*loop*/false);
-	this.pegmanSprite.animations.add('EAST', [4], fps, /*loop*/false);
-	this.pegmanSprite.animations.add('SOUTH', [8], fps, /*loop*/false);
-	this.pegmanSprite.animations.add('WEST', [12], fps, /*loop*/false);
-	this.pegmanSprite.animations.add('WEST_SOUTH', [12, 11, 10, 9, 8], fps, /*loop*/false);
-	this.pegmanSprite.animations.add('SOUTH_WEST', [8, 9, 10, 11, 12], fps, /*loop*/false);
-	this.pegmanSprite.animations.add('WEST_NORTH', [12, 13, 14, 15, 0], fps, /*loop*/false);
-	this.pegmanSprite.animations.add('NORTH_WEST', [0, 15, 14, 13, 12], fps, /*loop*/false);
-	this.pegmanSprite.animations.add('EAST_SOUTH', [4, 5, 6, 7, 8], fps, /*loop*/false);
-	this.pegmanSprite.animations.add('SOUTH_EAST', [8, 7, 6, 5, 4], fps, /*loop*/false);
-	this.pegmanSprite.animations.add('EAST_NORTH', [4, 3, 2, 1, 0], fps, /*loop*/false);
-	this.pegmanSprite.animations.add('NORTH_EAST', [0, 1, 2, 3, 4], fps, /*loop*/false);
+	if (this.pegmanSprite === null) {
+		this.pegmanSprite = game.add.sprite(0, 0, 'pegman');
+		this.pegmanSprite.kill();
+		this.pegmanSprite.anchor.setTo(0, 0.15);
+		this.pegmanSprite.animations.add('NORTH', [0], fps, /*loop*/false);
+		this.pegmanSprite.animations.add('EAST', [4], fps, /*loop*/false);
+		this.pegmanSprite.animations.add('SOUTH', [8], fps, /*loop*/false);
+		this.pegmanSprite.animations.add('WEST', [12], fps, /*loop*/false);
+		this.pegmanSprite.animations.add('WEST_SOUTH', [12, 11, 10, 9, 8], fps, /*loop*/false);
+		this.pegmanSprite.animations.add('SOUTH_WEST', [8, 9, 10, 11, 12], fps, /*loop*/false);
+		this.pegmanSprite.animations.add('WEST_NORTH', [12, 13, 14, 15, 0], fps, /*loop*/false);
+		this.pegmanSprite.animations.add('NORTH_WEST', [0, 15, 14, 13, 12], fps, /*loop*/false);
+		this.pegmanSprite.animations.add('EAST_SOUTH', [4, 5, 6, 7, 8], fps, /*loop*/false);
+		this.pegmanSprite.animations.add('SOUTH_EAST', [8, 7, 6, 5, 4], fps, /*loop*/false);
+		this.pegmanSprite.animations.add('EAST_NORTH', [4, 3, 2, 1, 0], fps, /*loop*/false);
+		this.pegmanSprite.animations.add('NORTH_EAST', [0, 1, 2, 3, 4], fps, /*loop*/false);
 
-	this.pegmanSprite.animations.add('FINISH', [20, 18, 20, 16, 20, 16, 20, 18, 20], fps, /*loop*/false);
+		this.pegmanSprite.animations.add('FINISH', [20, 18, 20, 16, 20, 16, 20, 18, 20], fps, /*loop*/false);
+	}
+	if (this.lookSprite === null) {
+		this.lookSprite = game.add.sprite(0, 0, 'look', 3);
+		this.lookSprite.kill();
+		this.lookSprite.anchor.setTo(0, 0.5);
+		this.lookSprite.animations.add('LOOK', [0, 1, 2, 3, 4, 5], fps, /*loop*/false);
+	}
 }
 
 Pegman.init = function(startPos) {
@@ -157,6 +167,16 @@ Pegman.animateFinish = function() {
 	}, this);
 }
 
+Pegman.animateLook = function(rotationDeg) {
+	this.lookSprite.reset(this.posX * Maze.SQUARE_SIZE + Pegman.PEGMAN_WIDTH/2, this.posY * Maze.SQUARE_SIZE + Pegman.PEGMAN_HEIGHT/2);
+	this.lookSprite.angle = this.direction * 90 - 90 + rotationDeg;
+	this.anim = this.lookSprite.animations.play("LOOK");
+	this.anim.onComplete.addOnce(function() {
+		this.lookSprite.kill();
+		this.playNextAction();
+	}, this);
+}
+
 Pegman.play = function() {
 	this.resetPos();
 	this.playNextAction();
@@ -201,10 +221,26 @@ Pegman.playNextAction = function() {
 			case "finish":
 				this.animateFinish();
 				break;
+			case "lookForward":
+				this.animateLook(0);
+				break;
+			case "lookLeft":
+				this.animateLook(-90);
+				break;
+			case "lookRight":
+				this.animateLook(90);
+				break;
 			default:
 				console.log("Missing: " + action.command);
+				window.setTimeout(function () {
+					Pegman.playNextAction();
+				}, 500);
 				break;
 		}
+	} else {
+		window.setTimeout(function () {
+			Pegman.playNextAction();
+		}, 500);
 	}
 }
 
@@ -240,4 +276,23 @@ Pegman.turnLeft = function(id) {
 Pegman.turnRight = function(id) {
 	this.turnTo(constrain(this.direction + 1, 4));
 	Pegman.nextAction({command: "right", blockId: id});
+}
+
+Pegman.isPath = function(direction) {
+	var step = getStepInDirection[directionToString(direction)];
+
+	return Maze.isPath(this.posX + step[0], this.posY + step[1]);
+}
+
+Pegman.isPathForward = function(id) {
+	Pegman.nextAction({command: "lookForward", blockId: id});
+	return this.isPath(this.direction);
+}
+Pegman.isPathLeft = function(id) {
+	Pegman.nextAction({command: "lookLeft", blockId: id});
+	return this.isPath(constrain(this.direction - 1, 4));
+}
+Pegman.isPathRight = function(id) {
+	Pegman.nextAction({command: "lookRight", blockId: id});
+	return this.isPath(constrain(this.direction + 1, 4));
 }

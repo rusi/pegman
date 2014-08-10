@@ -63,65 +63,67 @@ Blockly.JavaScript['block_forever'] = function(block) {
 	return 'while (true) {\n' + branch + '}\n';
 };
 
-// Blockly.Blocks['maze_if'] = {
-// 	// Block for 'if' conditional if there is a path.
-// 	init: function() {
-// 		var DIRECTIONS =
-// 				[[BlocklyApps.getMsg('Maze_pathAhead'), 'isPathForward'],
-// 				 [BlocklyApps.getMsg('Maze_pathLeft'), 'isPathLeft'],
-// 				 [BlocklyApps.getMsg('Maze_pathRight'), 'isPathRight']];
-// 		// Append arrows to direction messages.
-// 		DIRECTIONS[1][0] += ' \u21BA';
-// 		DIRECTIONS[2][0] += ' \u21BB';
-// 		this.setColour(210);
-// 		this.appendDummyInput()
-// 				.appendField(new Blockly.FieldDropdown(DIRECTIONS), 'DIR');
-// 		this.appendStatementInput('DO')
-// 				.appendField(BlocklyApps.getMsg('Maze_doCode'));
-// 		this.setTooltip(BlocklyApps.getMsg('Maze_ifTooltip'));
-// 		this.setPreviousStatement(true);
-// 		this.setNextStatement(true);
-// 	}
-// };
-// Blockly.JavaScript['maze_if'] = function(block) {
-// 	// Generate JavaScript for 'if' conditional if there is a path.
-// 	var argument = 'Maze.' + block.getFieldValue('DIR') +
-// 			'(\'block_id_' + block.id + '\')';
-// 	var branch = Blockly.JavaScript.statementToCode(block, 'DO');
-// 	var code = 'if (' + argument + ') {\n' + branch + '}\n';
-// 	return code;
-// };
+Blockly.Blocks['block_if'] = {
+	// Block for 'if' conditional if there is a path.
+	init: function() {
+		var DIRECTIONS =
+				[["ahead", 'isPathForward'],
+				 ["to the left", 'isPathLeft'],
+				 ["to the right", 'isPathRight']];
+		// Append arrows to direction messages.
+		DIRECTIONS[1][0] += ' \u21BA';
+		DIRECTIONS[2][0] += ' \u21BB';
+		this.setColour(210);
+		this.appendDummyInput()
+				.appendField("if path")
+				.appendField(new Blockly.FieldDropdown(DIRECTIONS), 'DIR');
+		this.appendStatementInput('DO')
+				.appendField("do");
+		this.setPreviousStatement(true);
+		this.setNextStatement(true);
+		// this.setTooltip(BlocklyApps.getMsg('Maze_ifTooltip'));
+	}
+};
+Blockly.JavaScript['block_if'] = function(block) {
+	// Generate JavaScript for 'if' conditional if there is a path.
+	var argument = 'Pegman.' + block.getFieldValue('DIR') +
+			'(\'block_id_' + block.id + '\')';
+	var branch = Blockly.JavaScript.statementToCode(block, 'DO');
+	var code = 'if (' + argument + ') {\n' + branch + '}\n';
+	return code;
+};
 
-// Blockly.Blocks['maze_ifElse'] = {
-// 	// Block for 'if/else' conditional if there is a path.
-// 	init: function() {
-// 		var DIRECTIONS =
-// 				[[BlocklyApps.getMsg('Maze_pathAhead'), 'isPathForward'],
-// 				 [BlocklyApps.getMsg('Maze_pathLeft'), 'isPathLeft'],
-// 				 [BlocklyApps.getMsg('Maze_pathRight'), 'isPathRight']];
-// 		// Append arrows to direction messages.
-// 		DIRECTIONS[1][0] += ' \u21BA';
-// 		DIRECTIONS[2][0] += ' \u21BB';
-// 		this.setColour(210);
-// 		this.appendDummyInput()
-// 				.appendField(new Blockly.FieldDropdown(DIRECTIONS), 'DIR');
-// 		this.appendStatementInput('DO')
-// 				.appendField(BlocklyApps.getMsg('Maze_doCode'));
-// 		this.appendStatementInput('ELSE')
-// 				.appendField(BlocklyApps.getMsg('Maze_elseCode'));
-// 		this.setTooltip(BlocklyApps.getMsg('Maze_ifelseTooltip'));
-// 		this.setPreviousStatement(true);
-// 		this.setNextStatement(true);
-// 	}
-// };
-// Blockly.JavaScript['maze_ifElse'] = function(block) {
-// 	// Generate JavaScript for 'if/else' conditional if there is a path.
-// 	var argument = 'Maze.' + block.getFieldValue('DIR') +
-// 			'(\'block_id_' + block.id + '\')';
-// 	var branch0 = Blockly.JavaScript.statementToCode(block, 'DO');
-// 	var branch1 = Blockly.JavaScript.statementToCode(block, 'ELSE');
-// 	var code = 'if (' + argument + ') {\n' + branch0 +
-// 						 '} else {\n' + branch1 + '}\n';
-// 	return code;
-// };
+Blockly.Blocks['block_ifElse'] = {
+	// Block for 'if/else' conditional if there is a path.
+	init: function() {
+		var DIRECTIONS =
+				[["ahead", 'isPathForward'],
+				 ["to the left", 'isPathLeft'],
+				 ["to the right", 'isPathRight']];
+		// Append arrows to direction messages.
+		DIRECTIONS[1][0] += ' \u21BA';
+		DIRECTIONS[2][0] += ' \u21BB';
+		this.setColour(210);
+		this.appendDummyInput()
+				.appendField("if path")
+				.appendField(new Blockly.FieldDropdown(DIRECTIONS), 'DIR');
+		this.appendStatementInput('DO')
+				.appendField("do");
+		this.appendStatementInput('ELSE')
+				.appendField("else");
+		this.setPreviousStatement(true);
+		this.setNextStatement(true);
+		// this.setTooltip(BlocklyApps.getMsg('Maze_ifelseTooltip'));
+	}
+};
+Blockly.JavaScript['block_ifElse'] = function(block) {
+	// Generate JavaScript for 'if/else' conditional if there is a path.
+	var argument = 'Pegman.' + block.getFieldValue('DIR') +
+			'(\'block_id_' + block.id + '\')';
+	var branch0 = Blockly.JavaScript.statementToCode(block, 'DO');
+	var branch1 = Blockly.JavaScript.statementToCode(block, 'ELSE');
+	var code = 'if (' + argument + ') {\n' + branch0 +
+						 '} else {\n' + branch1 + '}\n';
+	return code;
+};
 
