@@ -58,7 +58,10 @@ BlocklyUtils.updateCapacity = function() {
 		return;
 	}
 	cap = Number(cap);
-	$("#capacity").text("Remaining " + cap + " blocks.");
+	$("#capacity").text("Remaining " + cap + " blocks. ");
+	if (cap == 0 && Maze.level.helpText) {
+		$("#capacity").append(Maze.level.helpText.replace("#NEXT_LEVEL", Maze.LEVEL + 1));
+	}
 }
 
 /**
@@ -272,7 +275,10 @@ BlocklyUtils.congratulationsKeyDown_ = function(e) {
 /**
  * Go to the next level.
  */
+BlocklyUtils.nextLevelURL = function(nextLevel) {
+	return window.location.protocol + '//' + window.location.host + window.location.pathname
+		+ '?level=' + nextLevel;
+}
 BlocklyUtils.nextLevel = function() {
-	window.location = window.location.protocol + '//' + window.location.host + window.location.pathname
-		+ '?level=' + (Maze.LEVEL + 1);
+	window.location = BlocklyUtils.nextLevelURL(Maze.LEVEL + 1);
 };

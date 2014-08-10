@@ -6,7 +6,6 @@ var Maze = Maze || {};
 Maze.MAX_LEVEL = Maze.levels.length;
 Maze.LEVEL = getNumberParamFromUrl('level', 1, Maze.MAX_LEVEL);
 
-
 /**
  * The types of squares in the maze, which is represented
  * as a 2D array of SquareType values.

@@ -19,13 +19,14 @@ Maze.levels = [
 {
 	caption: "Basic functions 1",
 	map: // Level 1.
-		 [[0, 0, 0, 0, 0, 0, 0],
-		  [0, 0, 0, 0, 0, 0, 0],
-		  [0, 0, 0, 0, 0, 0, 0],
-		  [0, 0, 0, 0, 0, 0, 0],
-		  [0, 0, 2, 1, 3, 0, 0],
-		  [0, 0, 0, 0, 0, 0, 0],
-		  [0, 0, 0, 0, 0, 0, 0]],
+		 [[0, 0, 0, 0, 0, 0, 0, 0],
+		  [0, 0, 0, 0, 0, 0, 0, 0],
+		  [0, 0, 0, 0, 0, 0, 0, 0],
+		  [0, 0, 0, 0, 0, 0, 0, 0],
+		  [0, 0, 2, 1, 3, 0, 0, 0],
+		  [0, 0, 0, 0, 0, 0, 0, 0],
+		  [0, 0, 0, 0, 0, 0, 0, 0],
+		  [0, 0, 0, 0, 0, 0, 0, 0]],
 	maxBlocks: Infinity, // unlimited
 	blocks: blocksA,
 },
@@ -44,7 +45,22 @@ Maze.levels = [
 	blocks: blocksA,
 },
 {
+	caption: "Basic functions 3",
+	map:
+		 [[0, 0, 0, 0, 0, 0, 0, 0],
+		  [0, 2, 1, 1, 0, 0, 0, 0],
+		  [0, 0, 0, 1, 0, 0, 0, 0],
+		  [0, 0, 0, 1, 1, 1, 1, 0],
+		  [0, 0, 0, 0, 1, 0, 1, 0],
+		  [0, 0, 0, 0, 1, 0, 1, 0],
+		  [0, 0, 0, 0, 1, 1, 1, 3],
+		  [0, 0, 0, 0, 0, 0, 0, 0]],
+	maxBlocks: Infinity, // unlimited
+	blocks: blocksA,
+},
+{
 	caption: "Loops 1 (is it possible?)",
+	helpText: "Try the <a href='" + BlocklyUtils.nextLevelURL("#NEXT_LEVEL") + "'>next level</a>...",
 	map: // Level 3.
 		 [[0, 0, 0, 0, 0, 0, 0, 0],
 		  [0, 0, 0, 0, 0, 0, 0, 0],
@@ -92,7 +108,7 @@ Maze.levels = [
 	blocks: blocksB,
 },
 {
-	caption: "Advanced loops",
+	caption: "Advanced loops 1",
 	map: // Level 5.
 		 [[0, 0, 0, 0, 0, 0, 0, 0],
 		  [0, 0, 0, 0, 0, 3, 0, 0],
@@ -106,7 +122,22 @@ Maze.levels = [
 	blocks: blocksB,
 },
 {
+	caption: "Advanced loops 2",
+	map:
+		 [[0, 0, 0, 0, 0, 0, 0, 0],
+		  [0, 0, 0, 0, 0, 0, 0, 0],
+		  [0, 0, 0, 0, 0, 1, 3, 0],
+		  [0, 0, 0, 0, 0, 1, 0, 0],
+		  [0, 0, 0, 1, 1, 1, 0, 0],
+		  [0, 0, 0, 1, 0, 1, 0, 0],
+		  [0, 2, 1, 1, 1, 1, 0, 0],
+		  [0, 0, 0, 0, 0, 0, 0, 0]],
+	maxBlocks: 7,
+	blocks: blocksB,
+},
+{
 	caption: "Loops - mission impossible",
+	helpText: "Try the <a href='" + BlocklyUtils.nextLevelURL("#NEXT_LEVEL") + "'>next level</a>...",
 	map: // Level 6.
 		 [[0, 0, 0, 0, 0, 0, 0, 0],
 		  [0, 0, 0, 0, 0, 0, 0, 0],
