@@ -22,6 +22,9 @@
 	<script type="text/javascript" src="./blockly/javascript_compressed.js"></script>
 	<script type="text/javascript" src="./blockly/msg/js/en.js"></script>
 
+	<script type="text/javascript" src="./ace-min-noconflict/ace.js" charset="utf-8"></script>
+	<script type="text/javascript" src="./js/ace_utils.js"></script>
+
 	<script type="text/javascript" src="./maze/levels.js"></script>
 	<script type="text/javascript" src="./maze/maze.js"></script>
 	<script type="text/javascript" src="./maze/pegman.js"></script>
@@ -33,6 +36,7 @@
 
 <body>
 	<div id="canvas"></div>
+	<div id="blockly"></div>
 	<div id="editor"></div>
 	<table>
 	<tr>
@@ -102,6 +106,7 @@
 	</xml>
 	<script type="text/javascript">
 		BlocklyUtils.init();
+		AceUtils.init();
 	</script>
 </body>
 

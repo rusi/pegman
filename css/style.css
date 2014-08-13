@@ -8,10 +8,19 @@ body {
 	width: 400px;
 	height: 400px;
 }
-#editor {
+#blockly {
 	position: absolute;
 	top: 10px;
 	left: 420px;
+	height: 400px;
+	width: 500px;
+	/*right: 10px;*/
+	border: 1px solid gray;
+}
+#editor {
+	position: absolute;
+	top: 10px;
+	left: 930px;
 	height: 400px;
 	right: 10px;
 	border: 1px solid gray;

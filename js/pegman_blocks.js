@@ -56,11 +56,12 @@ Blockly.Blocks['block_forever'] = {
 Blockly.JavaScript['block_forever'] = function(block) {
 	// Generate JavaScript for forever loop.
 	var branch = Blockly.JavaScript.statementToCode(block, 'DO');
+	var infCheck = "";
 	if (Blockly.JavaScript.INFINITE_LOOP_TRAP) {
-		branch = Blockly.JavaScript.INFINITE_LOOP_TRAP.replace(/%1/g,
-				'\'block_id_' + block.id + '\'') + branch;
+		infCheck = Blockly.JavaScript.INFINITE_LOOP_TRAP.replace(/%1/g,
+				'\'block_id_' + block.id + '\'');
 	}
-	return 'while (true) {\n' + branch + '}\n';
+	return 'while (true && ' + infCheck + ') {\n' + branch + '}\n';
 };
 
 Blockly.Blocks['block_if'] = {

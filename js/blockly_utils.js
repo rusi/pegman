@@ -10,6 +10,8 @@ var ResultType = {
 
 var BlocklyUtils = BlocklyUtils || {};
 
+BlocklyUtils.blockIdToLineNumberMap = {};
+
 BlocklyUtils.buildToolbox = function() {
 	var toolbox = '<xml>';
 	//console.log(Maze.level.blocks);
@@ -25,7 +27,7 @@ BlocklyUtils.buildToolbox = function() {
 }
 
 BlocklyUtils.init = function() {
-	Blockly.inject(document.getElementById('editor'), {
+	Blockly.inject(document.getElementById('blockly'), {
 		path: './blockly/',
 		maxBlocks: Maze.level.maxBlocks,
 		//toolbox: document.getElementById('toolbox'),
@@ -34,7 +36,7 @@ BlocklyUtils.init = function() {
 		scrollbars: true,
 	});
 
-	Blockly.JavaScript.INFINITE_LOOP_TRAP = '  BlocklyUtils.checkTimeout(%1);\n';
+	Blockly.JavaScript.INFINITE_LOOP_TRAP = 'BlocklyUtils.checkTimeout(%1)';
 
 	if (document.getElementById('codeButton')) {
 		bindClick('codeButton', BlocklyUtils.showCode);
@@ -42,6 +44,7 @@ BlocklyUtils.init = function() {
 
 	Blockly.addChangeListener(function() {
 		BlocklyUtils.updateCapacity();
+		BlocklyUtils.showCodeInAce();
 	});
 
 	// Make connecting blocks easier for beginners.
@@ -64,18 +67,51 @@ BlocklyUtils.updateCapacity = function() {
 	}
 }
 
+BlocklyUtils.showCodeInAce = function() {
+	if (!AceUtils || !AceUtils.editor)
+		return;
+	var code = Blockly.JavaScript.workspaceToCode();
+	this.blockIdToLineNumberMap = this.getBlockIdToLineNumberMap(code);
+	//console.log(this.blockIdToLineNumberMap);
+
+	code = BlocklyUtils.stripCode(code);
+	AceUtils.editor.setValue(code, 1);
+}
+
 /**
  * Highlight the block (or clear highlighting).
  * @param {?string} id ID of block that triggered this action.
  */
 BlocklyUtils.highlight = function(id) {
 	if (id) {
+		AceUtils.editor.gotoLine(this.blockIdToLineNumberMap[id]);
 		var m = id.match(/^block_id_(\d+)$/);
 		if (m) {
 			id = m[1];
 		}
 	}
 	Blockly.mainWorkspace.highlightBlock(id);
+};
+
+BlocklyUtils.getBlockIdToLineNumberMap = function(code) {
+	var lines = code.match(/^.*((\r\n|\n|\r)|$)/gm);
+	var lines = _.map(lines, function(line) {
+		var matches = line.match(/(,\s*)?'(block_id_\d+)'\)/);
+		if (matches && matches.length >= 3)
+			return matches[2];
+		return "";
+	});
+	var vals = {};
+	_.each(lines, function(line, n){
+		if (line !== "" && line != null)
+			vals[line] = n+1;
+	});
+	return vals;
+	//return _.extend({}, lines);
+	// return _.map(lines, function(lines, n){
+	// 	var o = {}; o[lines] = n;
+	// 	return o;
+	// });
 };
 
 /**
@@ -87,7 +123,7 @@ BlocklyUtils.highlight = function(id) {
 	// Strip out serial numbers.
 	code = code.replace(/(,\s*)?'block_id_\d+'\)/g, ')');
 	// Remove timeouts.
-	var regex = new RegExp(Blockly.JavaScript.INFINITE_LOOP_TRAP
+	var regex = new RegExp(" && " + Blockly.JavaScript.INFINITE_LOOP_TRAP
 		.replace('(%1)', '\\((\'\\d+\')?\\)'), 'g');
 	return code.replace(regex, '');
 };
@@ -133,6 +169,7 @@ BlocklyUtils.checkTimeout = function(opt_id) {
 	if (BlocklyUtils.ticks-- < 0) {
 		throw Infinity;
 	}
+	return true;
 };
 
 BlocklyUtils.runProgram = function() {
