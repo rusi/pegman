@@ -4,18 +4,21 @@
 		{
 			"file_exclude_patterns":
 			[
-				"*.lock",
-				"*.tmproj*"
+				"*.lock"
+				,"*.tmproj*"
 			],
 			"folder_exclude_patterns":
 			[
-				"tmp",
-				"vendor",
-				"*.xcworkspace",
-				"*.esproj",
-				".meteor",
-				// "packages",
-				"*/.build",
+				"tmp"
+				,"vendor"
+				,"*.xcworkspace"
+				,"*.esproj"
+				,".meteor"
+				// ,"packages"
+				,"*/.build"
+				,"ace-min-noconflict"
+				,"blockly"
+				,"lib"
 			],
 			"follow_symlinks": true,
 			"path": "."

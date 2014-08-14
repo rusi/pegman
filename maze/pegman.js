@@ -17,15 +17,15 @@ var directionToString = function(direction)
 	switch (direction)
 	{
 		case DirectionType.EAST:
-		return "EAST";
+			return "EAST";
 		case DirectionType.WEST:
-		return "WEST";
+			return "WEST";
 		case DirectionType.SOUTH:
-		return "SOUTH";
+			return "SOUTH";
 		case DirectionType.NORTH:
-		return "NORTH";
+			return "NORTH";
 		default:
-		return "";
+			return "";
 	}
 };
 var getStepInDirection = {
@@ -188,7 +188,7 @@ Pegman.nextAction = function(action) {
 
 Pegman.playNextAction = function() {
 	if (this.pegmanActions.length <= 0) {
-		BlocklyUtils.highlight(null);
+		Maze.level.editor.highlight(null);
 		return;
 	}
 
@@ -201,7 +201,7 @@ Pegman.playNextAction = function() {
 
 	var action = this.pegmanActions.shift();
 	// console.log(action);
-	BlocklyUtils.highlight(action.blockId);
+	Maze.level.editor.highlight(action.blockId);
 	if (action.command !== null) {
 		switch (action.command) {
 			case "forward":

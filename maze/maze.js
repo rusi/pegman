@@ -3,7 +3,7 @@
 
 var Maze = Maze || {};
 
-Maze.MAX_LEVEL = Maze.levels.length;
+Maze.MAX_LEVEL = Levels.length;
 Maze.LEVEL = getNumberParamFromUrl('level', 1, Maze.MAX_LEVEL);
 
 /**
@@ -44,7 +44,7 @@ Maze.tile_SHAPES = {
   'null4': [1, 3]
 };
 
-Maze.level = Maze.levels[Maze.LEVEL - 1];
+Maze.level = Levels[Maze.LEVEL - 1];
 Maze.map = Maze.level.map;
 
 /**
