@@ -6,13 +6,13 @@ body {
 	background: #F1EEE7;
 	border: 1px solid gray;
 	width: 400px;
-	height: 400px;
+	height: 500px;
 }
 #editorPaneA {
 	position: absolute;
 	top: 10px;
 	left: 420px;
-	height: 400px;
+	height: 500px;
 	width: 500px;
 	/*right: 10px;*/
 	border: 1px solid gray;
@@ -21,7 +21,7 @@ body {
 	position: absolute;
 	top: 10px;
 	left: 930px;
-	height: 400px;
+	height: 500px;
 	right: 10px;
 	border: 1px solid gray;
 }

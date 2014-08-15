@@ -26,6 +26,8 @@ SourceEditor.groupC = _.union(SourceEditor.groupB, [
 	"\nif (condition) {\n}\n",
 ]);
 SourceEditor.groupD = _.union(SourceEditor.groupC, [ "\nif (condition) {\n} else {\n}\n" ]);
+SourceEditor.groupE = _.union(SourceEditor.groupD, [ "\nfor (var i = 0; i < 5; ++i) {\n}\n" ]);
+SourceEditor.groupF = _.union(SourceEditor.groupE, [ "\nfunction move(n) {\n}\n" ]);
 
 
 var Levels = [
@@ -247,7 +249,7 @@ var Levels = [
 	blocks: "groupD",
 	editor: BlocklyEditor,
 },
-{
+{ // 15
 	caption: "Coding 101",
 	map:
 		 [[0, 0, 0, 0, 0, 0, 0, 0],
@@ -260,6 +262,36 @@ var Levels = [
 		  [0, 0, 0, 0, 0, 0, 0, 0]],
 	maxBlocks: 4,
 	blocks: "groupD",
+	editor: SourceEditor,
+},
+{ // 16
+	caption: "For loop + variables",
+	map:
+		 [[0, 0, 0, 0, 0, 0, 0, 0],
+		  [0, 2, 1, 0, 0, 1, 1, 0],
+		  [0, 1, 1, 0, 0, 1, 1, 0],
+		  [0, 1, 0, 1, 1, 0, 1, 0],
+		  [0, 1, 1, 1, 1, 1, 1, 0],
+		  [0, 1, 0, 1, 1, 0, 1, 0],
+		  [1, 1, 1, 0, 0, 1, 1, 3],
+		  [0, 0, 0, 0, 0, 0, 0, 0]],
+	maxBlocks: 4,
+	blocks: "groupE",
+	editor: SourceEditor,
+},
+{ // 17
+	caption: "functions",
+	map:
+		 [[0, 0, 0, 0, 0, 0, 0, 0],
+		  [0, 2, 1, 0, 0, 1, 1, 0],
+		  [0, 1, 1, 0, 0, 1, 1, 0],
+		  [0, 1, 0, 1, 1, 0, 1, 0],
+		  [0, 1, 1, 1, 1, 1, 1, 0],
+		  [0, 1, 0, 1, 1, 0, 1, 0],
+		  [1, 1, 1, 0, 0, 1, 1, 3],
+		  [0, 0, 0, 0, 0, 0, 0, 0]],
+	maxBlocks: 4,
+	blocks: "groupF",
 	editor: SourceEditor,
 }
 

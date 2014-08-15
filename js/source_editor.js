@@ -61,15 +61,16 @@ SourceEditor.execute = function() {
 		// Abnormal termination is a user error.
 		// if (e === Infinity) {
 		// 	result = ResultType.TIMEOUT;
-		// } else if (e === true) {
-		// 	result = ResultType.SUCCESS;
-		// } else if (e === false) {
-		// 	result = ResultType.ERROR;
-		// } else {
+		//} else
+		if (e === true) {
+			// result = ResultType.SUCCESS;
+		} else if (e === false) {
+			// result = ResultType.ERROR;
+		} else {
 		// 	// Syntax error, can't happen.
 		// 	result = ResultType.ERROR;
 		 	window.alert(e);
-		// }
+		}
 	}
 
 	Pegman.play();
