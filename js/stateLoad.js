@@ -18,6 +18,7 @@ var loadState = {
 	},
 
 	create: function() {
+		App.init();
 		// game.add.sprite(0, 0, 'tiles');
 		// console.log("load done");
 		// game.stage.backgroundColor = "#FFFFFF";

@@ -18,14 +18,14 @@ SourceEditor.groupA = [
 	"Pegman.turnLeft()",
 	"Pegman.turnRight()"
 ];
-SourceEditor.groupB = _.union(SourceEditor.groupA, [ "while(true) {\n}" ]);
+SourceEditor.groupB = _.union(SourceEditor.groupA, [ "\nwhile(true) {\n}\n" ]);
 SourceEditor.groupC = _.union(SourceEditor.groupB, [
 	"Pegman.isPathForward()",
 	"Pegman.isPathLeft()",
 	"Pegman.isPathRight()",
-	"if (condition) {\n} ",
+	"\nif (condition) {\n}\n",
 ]);
-SourceEditor.groupD = _.union(SourceEditor.groupC, [ " if (condition) {\n} else {\n}" ]);
+SourceEditor.groupD = _.union(SourceEditor.groupC, [ "\nif (condition) {\n} else {\n}\n" ]);
 
 
 var Levels = [

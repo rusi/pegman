@@ -5,7 +5,7 @@ var BlocklyEditor = BlocklyEditor || {};
 BlocklyEditor.blockIdToLineNumberMap = {};
 
 BlocklyEditor.init = function() {
-	Blockly.inject(document.getElementById('blockly'), {
+	Blockly.inject(document.getElementById('editorPaneA'), {
 		path: './blockly/',
 		maxBlocks: Maze.level.maxBlocks,
 		//toolbox: document.getElementById('toolbox'),
@@ -28,15 +28,12 @@ BlocklyEditor.init = function() {
 	// Make connecting blocks easier for beginners.
 	Blockly.SNAP_RADIUS *= 2;
 
-	this.codeEditor = ace.edit("editor");
+	this.codeEditor = ace.edit("editorPaneB");
 	// this.codeEditor.setTheme("ace/theme/monokai");
 	// this.codeEditor.setTheme("ace/theme/twilight");
 	// this.codeEditor.setTheme("ace/theme/vibrant_ink");
 	this.codeEditor.getSession().setMode("ace/mode/javascript");
 	this.codeEditor.setReadOnly(true);
-
-	bindClick('runButton', BlocklyUtils.runProgram);
-	bindClick('resetButton', BlocklyUtils.resetProgram);
 }
 
 BlocklyEditor.updateCapacity = function() {
@@ -141,3 +138,47 @@ BlocklyEditor.getBlockIdToLineNumberMap = function(code) {
 	// 	return o;
 	// });
 };
+
+BlocklyEditor.runProgram = function() {
+	Blockly.mainWorkspace.traceOn(true);
+	this.execute();
+};
+
+BlocklyEditor.resetProgram = function() {
+	this.highlight(null);
+	Blockly.mainWorkspace.traceOn(false);
+};
+
+BlocklyEditor.execute = function() {
+	var code = Blockly.JavaScript.workspaceToCode();
+	var result = ResultType.UNSET;
+
+	// Try running the user's code.  There are four possible outcomes:
+	// 1. If pegman reaches the finish [SUCCESS], true is thrown.
+	// 2. If the program is terminated due to running too long [TIMEOUT],
+	//    false is thrown.
+	// 3. If another error occurs [ERROR], that error is thrown.
+	// 4. If the program ended normally but without solving the maze [FAILURE],
+	//    no error or exception is thrown.
+	try {
+		eval(code);
+		result = ResultType.FAILURE;
+	} catch (e) {
+		// A boolean is thrown for normal termination.
+		// Abnormal termination is a user error.
+		if (e === Infinity) {
+			result = ResultType.TIMEOUT;
+		} else if (e === true) {
+			result = ResultType.SUCCESS;
+		} else if (e === false) {
+			result = ResultType.ERROR;
+		} else {
+			// Syntax error, can't happen.
+			result = ResultType.ERROR;
+			window.alert(e);
+		}
+	}
+
+	Pegman.play();
+}
+

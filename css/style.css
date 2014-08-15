@@ -8,7 +8,7 @@ body {
 	width: 400px;
 	height: 400px;
 }
-#blockly {
+#editorPaneA {
 	position: absolute;
 	top: 10px;
 	left: 420px;
@@ -17,13 +17,23 @@ body {
 	/*right: 10px;*/
 	border: 1px solid gray;
 }
-#editor {
+#editorPaneB {
 	position: absolute;
 	top: 10px;
 	left: 930px;
 	height: 400px;
 	right: 10px;
 	border: 1px solid gray;
+}
+.apiPane pre {
+	padding-left: 6px;
+}
+.apiPane h3 {
+	margin: 0px;
+	padding: 0px;
+	background-color: black;
+	color: white;
+	text-align: center;
 }
 
 #codeButton {
